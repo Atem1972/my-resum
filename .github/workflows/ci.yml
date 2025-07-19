@@ -14,20 +14,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  ## here with can pull shell script or we can use action ie on line 19 is a shell command  but on this line we didn run a shell command like git clone which instead of uses we could have use RUN but we use actions instead
     - name: Build the Docker image with tag
       run: docker build . --file Dockerfile --tag my-image-name:${{github.run_number}}
     - name: Build latest 
       run: docker build . --file Dockerfile --tag my-image-name
     - name: Login to Docker hub
-      run: docker login -u ${{secrets.REGISTRY_USERNAME}} -p ${{secrets.REGISTRY_PASS}}
+      run: docker login -u ${{secrets.REGISTRY_USERNAME}} -p ${{secrets.REGISTRY_PASS}}  ## here we are calling a secret store in github
     - name: Tag image 
       run: docker tag my-image-name:${{github.run_number}} ${{secrets.REGISTRY_USERNAME}}/my-image-name:${{github.run_number}}
     - name: Push Image 
       run: docker push  ${{secrets.REGISTRY_USERNAME}}/my-image-name:${{github.run_number}}
 
   deploy:              ### second job
-    needs: build
+    needs: build          # this line in needs: simply means this stag of job depend on another job ie waith run after the other job has finish running
     runs-on: ubuntu-latest ## this github action runner is called share runner   # this simply want us to declear where we want the job to run ie either here in github action ubuntu or in another server elsewhere
     steps:
       - name: SSH to Server 
@@ -41,3 +41,7 @@ jobs:
               docker rm resume || echo ""
               docker run -d --name resume -p 8080:5001 ${{secrets.REGISTRY_USERNAME}}/my-image-name:${{github.run_number}}
 
+
+
+
+note: all jobs in github action run in parallel 
