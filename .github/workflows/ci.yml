@@ -1,6 +1,6 @@
-name: Resume ci Build
+name: Resume ci Build   #
 
-on:
+on:                      ## this is just setting triger on our pipeline
   workflow_dispatch:
   #push:
  #   branches: [ "main" ]
@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build:
+  build:          first job
 
     runs-on: ubuntu-latest
 
@@ -26,9 +26,9 @@ jobs:
     - name: Push Image 
       run: docker push  ${{secrets.REGISTRY_USERNAME}}/my-image-name:${{github.run_number}}
 
-  deploy:
+  deploy:              ### second job
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest ## this github action runner is called share runner   # this simply want us to declear where we want the job to run ie either here in github action ubuntu or in another server elsewhere
     steps:
       - name: SSH to Server 
         uses: appleboy/ssh-action@v1.0.3
