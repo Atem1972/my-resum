@@ -12,6 +12,7 @@ jobs:
   build:          first job
 
     runs-on: ubuntu-latest
+    ### for u to run the build step in another sever make sure u have the runner there install and configure. to get the command to run, go to github where ur code is click on action then runner ..
 
     steps:
     - uses: actions/checkout@v4  ## here with can pull shell script or we can use action ie on line 19 is a shell command  but on this line we didn run a shell command like git clone which instead of uses we could have use RUN but we use actions instead
